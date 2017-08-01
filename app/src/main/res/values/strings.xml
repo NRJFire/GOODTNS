@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">GOODTNS</string>
+    <string name="software_factory">Software Factory</string>
+    <string name="login_button">Login</string>
+    <string name="filed_empty">Field empty</string>
+    <string name="toast_logout">Click again to exit</string>
+    <string name="login">Login</string>
+    <string name="password">Password</string>
 </resources>
