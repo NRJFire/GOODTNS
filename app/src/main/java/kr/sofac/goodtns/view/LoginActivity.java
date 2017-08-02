@@ -16,6 +16,9 @@ import java.util.ArrayList;
 import kr.sofac.goodtns.R;
 import timber.log.Timber;
 
+import static kr.sofac.goodtns.Constants.APP_PREFERENCES;
+import static kr.sofac.goodtns.Constants.IS_AUTHORIZATION;
+
 public class LoginActivity extends BaseActivity implements View.OnClickListener {
 
     public static SharedPreferences preferences;
@@ -66,6 +69,13 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         if ("".equals(password) && "".equals(login)) {
             Toast.makeText(LoginActivity.this, getString(R.string.filed_empty), Toast.LENGTH_SHORT).show();
         } else {
+            preferences = getSharedPreferences(APP_PREFERENCES, MODE_PRIVATE);
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putBoolean(IS_AUTHORIZATION, true);
+            editor.apply();
+            editor.commit();
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
 //            CheckAuthorizationOnServer task = new CheckAuthorizationOnServer();
 //            task.execute(editLogin.getText().toString(), editPassword.getText().toString());
         }

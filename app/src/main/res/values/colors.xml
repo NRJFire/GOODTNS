@@ -16,4 +16,7 @@
 
 
     <color name="transparent">#00ffffff</color>
+    <color name="colorItemTitle">#000</color>
+    <color name="colorItemDate">#000</color>
+    <color name="colorItemContext">#000</color>
 </resources>
