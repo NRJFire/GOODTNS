@@ -30,9 +30,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/app_name"
+            android:textStyle="bold"
             android:textColor="@color/color_white"
-            android:textSize="30sp"
-            android:textStyle="bold" />
+            android:textSize="30sp" />
 
     </LinearLayout>
 
@@ -89,7 +89,7 @@
                 android:id="@+id/spinner_login"
                 android:layout_width="230dp"
                 android:layout_height="wrap_content"
-                android:entries="@array/rolelist">
+                android:entries="@array/rolelist" >
 
             </Spinner>
 
