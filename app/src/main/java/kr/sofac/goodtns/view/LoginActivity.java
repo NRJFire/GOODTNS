@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -23,6 +24,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     private static long backPressed;
     EditText editPassword, editLogin;
     Button buttonLogin;
+    Spinner spinnerLogin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,15 +46,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
     private void initUI() {
 
-        Spinner spinnerLogin = (Spinner) findViewById(R.id.spinner_login);
-
-        ArrayList<String> stringsSpinnerLanguage = new ArrayList<>();
-        stringsSpinnerLanguage.add("Client");
-        stringsSpinnerLanguage.add("Staff");
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, stringsSpinnerLanguage);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerLogin.setAdapter(adapter);
-
+        spinnerLogin = (Spinner) findViewById(R.id.spinner_login);
         editPassword = (EditText) findViewById(R.id.editPassword);
         editLogin = (EditText) findViewById(R.id.editLogin);
         buttonLogin = (Button) findViewById(R.id.buttonLogin);
@@ -66,6 +60,12 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         if ("".equals(password) && "".equals(login)) {
             Toast.makeText(LoginActivity.this, getString(R.string.filed_empty), Toast.LENGTH_SHORT).show();
         } else {
+            System.out.println("============login============== " + login.toString());
+            System.out.println("============password============== " + password);
+            System.out.println("============spinnerLogin============== " + spinnerLogin.getSelectedItem().toString());
+
+
+
 //            CheckAuthorizationOnServer task = new CheckAuthorizationOnServer();
 //            task.execute(editLogin.getText().toString(), editPassword.getText().toString());
         }
