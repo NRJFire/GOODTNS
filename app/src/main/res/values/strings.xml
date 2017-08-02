@@ -1,9 +1,10 @@
 <resources>
-    <string name="app_name">GOODTNS</string>
-    <string name="software_factory">Software Factory</string>
+    <string name="app_name">GOOD TNS</string>
+    <string name="software_factory">Good&amp;Good Financial Co.,Ltd</string>
     <string name="login_button">Login</string>
     <string name="filed_empty">Field empty</string>
     <string name="toast_logout">Click again to exit</string>
     <string name="login">Login</string>
     <string name="password">Password</string>
+    <string name="login_description">굿-TNS는 종합재무설계를 컨설팅 시스템 입니다</string>
 </resources>

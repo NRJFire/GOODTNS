@@ -31,7 +31,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".view.LoginActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".view.MainActivity"></activity>
     </application>
 

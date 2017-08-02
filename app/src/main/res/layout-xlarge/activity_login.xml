@@ -29,9 +29,8 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/app_name"
-            android:textStyle="bold"
-            android:textColor="@color/color_white"
+            android:text="GOOD TNS"
+            android:textColor="@color/colorPrimaryDark"
             android:textSize="30sp" />
 
     </LinearLayout>
@@ -57,7 +56,7 @@
             android:layout_height="wrap_content"
             android:text="@string/login_description"
             android:textColor="@color/colorPrimaryDark"
-            android:textSize="13sp" />
+            android:textSize="15sp" />
 
     </LinearLayout>
 
@@ -86,7 +85,6 @@
 
 
             <Spinner
-                android:id="@+id/spinner_login"
                 android:layout_width="230dp"
                 android:layout_height="wrap_content">
 
