@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "540317609157",
+    "firebase_url": "https://goodtns-abc2d.firebaseio.com",
+    "project_id": "goodtns-abc2d",
+    "storage_bucket": "goodtns-abc2d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:540317609157:android:a3d6ebdebde6f50e",
+        "android_client_info": {
+          "package_name": "kr.sofac.goodtns"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "540317609157-fpnpu948upbn0j6a0rfpnngg3tb6q4jf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBS_tni_wx0Z7Cvhe2b26iNqWE9845n5Hk"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

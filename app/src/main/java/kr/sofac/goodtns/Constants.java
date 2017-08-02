@@ -12,4 +12,6 @@ public class Constants {
 
     public static final String APP_PREFERENCES = "APP_PREFERENCES";
     public final static String IS_AUTHORIZATION = "IS_AUTHORIZATION";
+
+    public final static String GOOGLE_CLOUD_PREFERENCE = "GOOGLE_CLOUD_PREFERENCE";
 }
