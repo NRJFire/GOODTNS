@@ -1,5 +1,7 @@
 package kr.sofac.goodtns.server.retrofit;
 
+import android.content.Context;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -25,13 +27,14 @@ public class ManagerRetrofit<T> {
 
     private static ServiceRetrofit serviceRetrofit;
     private String responseServer = SERVER_RESPONSE_ERROR;
+    private Context contextView;
 
-    public interface AsyncResponseWithAnswer {
-        void processFinish(Boolean isSuccess, String answer);
+
+    public interface AsyncAnswer {
+        void processFinish(Boolean isSuccess, String answer, Context context);
     }
 
-
-    private AsyncResponseWithAnswer asyncResponseWithAnswer = null;
+     private AsyncAnswer answer = null;
 
     public ManagerRetrofit() {
 
@@ -48,33 +51,28 @@ public class ManagerRetrofit<T> {
     @SuppressWarnings("unchecked")
     public void sendRequest(T object, String requestType, Callback<ResponseBody> responseBodyCallback) {
         ServerRequest serverRequest = new ServerRequest(requestType, object);
-        Timber.e("serverRequest !!!!!!!!!! : "+serverRequest);
+        Timber.e("serverRequest !!!!!!!!!! : " + serverRequest);
         getServiceRetrofit().getData(new ServerRequest(requestType, object)).enqueue(responseBodyCallback);
     }
 
     @SuppressWarnings("unchecked")
-    public void sendRequest(T object, String requestType) {
+    public void sendRequest(Context context, T object, String requestType, AsyncAnswer asyncAnswer) {
+        contextView = context;
+        answer = asyncAnswer;
         ServerRequest serverRequest = new ServerRequest(requestType, object);
-        Timber.e("serverRequest !!!!!!!!!! : "+serverRequest);
+        Timber.e("serverRequest !!!!!!!!!! : " + serverRequest);
 
         getServiceRetrofit().getData(serverRequest).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    responseServer = response.body().string();
-                    asyncResponseWithAnswer.processFinish(true, responseServer);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-
-                try {
-
-                    if (!response.body().string().contains(SERVER_RESPONSE_ERROR)) {
-//                        Timber.e("!!!!!!!!!" + req);
-//                        startMainActivity();
+                    String responseServer = response.body().string();
+                    Timber.e("serverRequest !!!!!!!!!! : " + responseServer);
+                    if (!responseServer.contains(SERVER_RESPONSE_ERROR)) {
+                        answer.processFinish(true, responseServer, contextView);
+                    } else {
+                        answer.processFinish(false, null, contextView);
                     }
-
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -82,13 +80,13 @@ public class ManagerRetrofit<T> {
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-                asyncResponseWithAnswer.processFinish(false, null);
+                answer.processFinish(false, null, contextView);
             }
         });
 
     }
 
-    public ServiceRetrofit getServiceRetrofit() {
+    private ServiceRetrofit getServiceRetrofit() {
         return serviceRetrofit;
     }
 

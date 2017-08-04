@@ -24,6 +24,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import timber.log.Timber;
 
+import static com.orm.SugarRecord.listAll;
 import static kr.sofac.goodtns.Constants.APP_PREFERENCES;
 import static kr.sofac.goodtns.Constants.GOOGLE_CLOUD_PREFERENCE;
 import static kr.sofac.goodtns.Constants.IS_AUTHORIZATION;
@@ -32,6 +33,9 @@ public class MainActivity extends BaseActivity {
 
     ListView listViewPush;
     private static long backPressed;
+    private ArrayList<PushMessage> pushMessages;
+    private AdapterPushList adapterPushList;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,19 +43,20 @@ public class MainActivity extends BaseActivity {
         setContentView(R.layout.activity_main);
 
         listViewPush = (ListView) findViewById(R.id.id_push_list_view);
-        ArrayList<PushMessage> pushMessages = new ArrayList<>();
-        pushMessages.add(new PushMessage("Hello push 1", "Message push 12321 32 2 3123 3 123", "02.08.2017"));
-        pushMessages.add(new PushMessage("Hello push 1", "Message push 12321 32 2 3123 3 123", "02.08.2017"));
-        pushMessages.add(new PushMessage("Hello push 1", "Message push 12321 32 2 3123 3 123", "02.08.2017"));
 
-        AdapterPushList adapterPushList = new AdapterPushList(this, pushMessages);
+        updateViewList();
+    }
+
+    @Override
+    protected void onResume() {
+        updateViewList();
+        super.onResume();
+    }
+
+    protected void updateViewList() {
+        pushMessages = (ArrayList<PushMessage>) listAll(PushMessage.class);
+        adapterPushList = new AdapterPushList(this, pushMessages);
         listViewPush.setAdapter(adapterPushList);
-//
-//        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
-//        String googleKey = sharedPref.getString(Constants.GOOGLE_CLOUD_PREFERENCE, "");
-//        Timber.e("!!!!! googleKey !!!!: "+googleKey);
-//        new Server().authorizationManager(new AuthorizationDTO("JNK", "ec6a6536ca304edf844d1d248a4f08dc", googleKey));
-
     }
 
     @Override

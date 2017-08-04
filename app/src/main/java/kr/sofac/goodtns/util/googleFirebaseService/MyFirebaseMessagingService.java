@@ -19,7 +19,6 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 
-
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +29,7 @@ import kr.sofac.goodtns.view.SplashActivity;
 import timber.log.Timber;
 
 import static android.provider.AlarmClock.EXTRA_MESSAGE;
+
 import kr.sofac.goodtns.Constants;
 
 
@@ -45,22 +45,11 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     public void onMessageReceived(RemoteMessage remoteMessage) {
         pushMessageType = remoteMessage.getData().get("type");
 
+        buildNotificationToShow(remoteMessage.getData().get("message"), remoteMessage.getData().get("date"), remoteMessage.getData().get("title"));
 
-        //if (Constants.GROUP_PUSH_TYPE.equals(pushMessageType)) {
-            buildNotificationToShow(remoteMessage.getData().get("message"), remoteMessage.getData().get("date"), remoteMessage.getData().get("title"));
-//        } else {
-//
-//            if (remoteMessage.getData().size() > 0) {
-//                buildNotificationToShow(remoteMessage.getData().get("message"), remoteMessage.getData().get("date"), remoteMessage.getData().get("title"));
-//
-//                PushMessage newPushMessage = new PushMessage(remoteMessage.getData().get("title"), remoteMessage.getData().get("message"), remoteMessage.getData().get("date"));
-//                newPushMessage.save();
-//            }
-//
-//            if (remoteMessage.getNotification() != null) {
-//                Timber.i("Message Notification Body: " + remoteMessage.getNotification().getBody());
-//            }
-//        }
+        PushMessage newPushMessage = new PushMessage(remoteMessage.getData().get("title"), remoteMessage.getData().get("message"), remoteMessage.getData().get("date"));
+        newPushMessage.save();
+
     }
 
 
@@ -73,7 +62,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         mNotificationManager = (NotificationManager) this
                 .getSystemService(this.NOTIFICATION_SERVICE);
         builder = new NotificationCompat.Builder(this);
-        builder.setContentTitle("GOOD TNS");
+        builder.setContentTitle(title);
         builder.setContentText(Html.fromHtml(messageText).toString())
                 .setSmallIcon(R.drawable.account)
                 //.setStyle(bigPictureStyle)

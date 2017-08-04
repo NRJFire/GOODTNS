@@ -1,5 +1,6 @@
 package kr.sofac.goodtns.view;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
@@ -23,6 +24,7 @@ import kr.sofac.goodtns.Constants;
 import kr.sofac.goodtns.R;
 import kr.sofac.goodtns.dto.AuthorizationDTO;
 import kr.sofac.goodtns.server.Server;
+import kr.sofac.goodtns.server.retrofit.ManagerRetrofit;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -77,6 +79,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         String googleKey = sharedPref.getString(Constants.GOOGLE_CLOUD_PREFERENCE, "");
+        AuthorizationDTO authorizationDTO = new AuthorizationDTO(login, password, googleKey);
 
         if ("".equals(password) && "".equals(login)) {
             Toast.makeText(LoginActivity.this, getString(R.string.filed_empty), Toast.LENGTH_SHORT).show();
@@ -84,41 +87,30 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
             if (spinnerLogin.getSelectedItem().toString().equals("Client")) {
 
-
-                new Server().authorizationUser(new AuthorizationDTO(login, password, googleKey), new Callback<ResponseBody>() {
+                new Server().authorizationUser(LoginActivity.this, authorizationDTO, new ManagerRetrofit.AsyncAnswer() {
                     @Override
-                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                        String req = "";
-                        try {
-                            req = response.body().string();
-                            if (!req.contains(SERVER_RESPONSE_ERROR)) {
-                                Timber.e("!!!!!!!!!" + req);
-                                startMainActivity();
-                            }
-                        } catch (IOException e) {
-                            e.printStackTrace();
+                    public void processFinish(Boolean isSuccess, String answer, Context context) {
+                        if (isSuccess) {
+                            startMainActivity();
+                        } else {
+                            Toast.makeText(context, "Error data!", Toast.LENGTH_SHORT).show();
                         }
                     }
-
-                    @Override
-                    public void onFailure(Call<ResponseBody> call, Throwable t) {
-                    }
                 });
+
 
             } else {
 
-                new Server().authorizationManager(new AuthorizationDTO(login, password, googleKey), new Callback<ResponseBody>() {
+                new Server().authorizationManager(LoginActivity.this, authorizationDTO, new ManagerRetrofit.AsyncAnswer() {
                     @Override
-                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-
-
-                    }
-
-                    @Override
-                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+                    public void processFinish(Boolean isSuccess, String answer, Context context) {
+                        if (isSuccess) {
+                            startMainActivity();
+                        } else {
+                            Toast.makeText(context, "Error data!", Toast.LENGTH_SHORT).show();
+                        }
                     }
                 });
-
 
             }
         }

@@ -25,15 +25,15 @@ public class AdapterPushList extends BaseAdapter {
     private LayoutInflater inflater;
 
     public AdapterPushList(Context context, ArrayList<PushMessage> pushMessageArrayList) {
-        if (pushMessageArrayList != null) {
-            if (pushMessageArrayList.size() > 1) {
-                Collections.sort(pushMessageArrayList, new Comparator<PushMessage>() {
-                    public int compare(PushMessage o1, PushMessage o2) {
-                        return o2.getDate().compareTo(o1.getDate());
-                    }
-                });
-            }
-        }
+//        if (pushMessageArrayList != null) {
+//            if (pushMessageArrayList.size() > 1) {
+//                Collections.sort(pushMessageArrayList, new Comparator<PushMessage>() {
+//                    public int compare(PushMessage o1, PushMessage o2) {
+//                        return o2.getDate().compareTo(o1.getDate());
+//                    }
+//                });
+//            }
+//        }
         this.pushMessageArrayList = pushMessageArrayList;
         this.ctx = context;
         this.inflater = (LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
