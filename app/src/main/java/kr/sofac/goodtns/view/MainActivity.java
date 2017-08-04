@@ -94,6 +94,7 @@ public class MainActivity extends BaseActivity {
         editor.apply();
         intentSplashActivity.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         editor.commit();
+        PushMessage.deleteAll(PushMessage.class);
         startActivity(intentSplashActivity);
     }
 }

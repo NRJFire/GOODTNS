@@ -9,8 +9,8 @@ public class Constants {
     //public final static String BASE_URL = "http://52.211.242.225:8080/";
     //public final static String BASE_URL = "http://192.168.1.108:8080/";
 
-    public final static String BASE_URL = "http://192.168.0.10/";
-    public final static String PART_URL_APP = "goodtns2/data/ajax/request.php";
+    public final static String BASE_URL = "http://goodtns.gq/";
+    public final static String PART_URL_APP = "data/ajax/request.php";
 
 //    public final static String BASE_URL = "http://192.168.0.32:8080/";
 //    public final static String PART_URL_APP = "app-exchange";

@@ -49,12 +49,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         PushMessage newPushMessage = new PushMessage(remoteMessage.getData().get("title"), remoteMessage.getData().get("message"), remoteMessage.getData().get("date"));
         newPushMessage.save();
-
     }
 
-
     private void buildNotificationToShow(String messageText, String date, String title) {
-
 
         Intent notificationIntent = null;
         notificationIntent = new Intent(this, SplashActivity.class);
