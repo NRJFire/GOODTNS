@@ -24,6 +24,8 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
+import kr.sofac.goodtns.R;
+import kr.sofac.goodtns.dto.PushMessage;
 import kr.sofac.goodtns.view.SplashActivity;
 import timber.log.Timber;
 
@@ -44,37 +46,37 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         pushMessageType = remoteMessage.getData().get("type");
 
 
-        /*if (Constants.GROUP_PUSH_TYPE.equals(pushMessageType)) {
+        //if (Constants.GROUP_PUSH_TYPE.equals(pushMessageType)) {
             buildNotificationToShow(remoteMessage.getData().get("message"), remoteMessage.getData().get("date"), remoteMessage.getData().get("title"));
-        } else {
-
-            if (remoteMessage.getData().size() > 0) {
-                buildNotificationToShow(remoteMessage.getData().get("message"), remoteMessage.getData().get("date"), remoteMessage.getData().get("title"));
-
-                PushMessage newPushMessage = new PushMessage(remoteMessage.getData().get("title"), remoteMessage.getData().get("message"), remoteMessage.getData().get("date"));
-                newPushMessage.save();
-            }
-
-            if (remoteMessage.getNotification() != null) {
-                Timber.i("Message Notification Body: " + remoteMessage.getNotification().getBody());
-            }
-        }*/
+//        } else {
+//
+//            if (remoteMessage.getData().size() > 0) {
+//                buildNotificationToShow(remoteMessage.getData().get("message"), remoteMessage.getData().get("date"), remoteMessage.getData().get("title"));
+//
+//                PushMessage newPushMessage = new PushMessage(remoteMessage.getData().get("title"), remoteMessage.getData().get("message"), remoteMessage.getData().get("date"));
+//                newPushMessage.save();
+//            }
+//
+//            if (remoteMessage.getNotification() != null) {
+//                Timber.i("Message Notification Body: " + remoteMessage.getNotification().getBody());
+//            }
+//        }
     }
 
 
     private void buildNotificationToShow(String messageText, String date, String title) {
 
 
-        /*Intent notificationIntent = null;
+        Intent notificationIntent = null;
         notificationIntent = new Intent(this, SplashActivity.class);
 
         mNotificationManager = (NotificationManager) this
                 .getSystemService(this.NOTIFICATION_SERVICE);
         builder = new NotificationCompat.Builder(this);
-        builder.setContentTitle(title);
+        builder.setContentTitle("GOOD TNS");
         builder.setContentText(Html.fromHtml(messageText).toString())
-                .setSmallIcon(R.drawable.icon)
-              *//*  .setStyle(bigPictureStyle)*//*
+                .setSmallIcon(R.drawable.account)
+                //.setStyle(bigPictureStyle)
                 .setAutoCancel(true)
                 .setContentIntent(
                         PendingIntent.getActivity(this, 10,
@@ -84,7 +86,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 .getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         builder.setSound(alarmSound);
 
-        mNotificationManager.notify((int) (Math.random() * 100000), builder.build());*/
+        mNotificationManager.notify((int) (Math.random() * 100000), builder.build());
 
     }
 
