@@ -1,6 +1,4 @@
 package kr.sofac.goodtns.server;
-
-import android.content.Context;
 import kr.sofac.goodtns.dto.AuthorizationDTO;
 import kr.sofac.goodtns.server.retrofit.ManagerRetrofit;
 
@@ -11,16 +9,17 @@ import kr.sofac.goodtns.server.retrofit.ManagerRetrofit;
 
 public class Server {
 
+    // Type authorizationType = new TypeToken<ServerResponse<ManagerInfoDTO>>() {}.getType();
 
-    public void authorizationUser(Context context, AuthorizationDTO authorizationDTO, ManagerRetrofit.AsyncAnswer asyncAnswer) {
+    public Boolean authorizationUser(AuthorizationDTO authorizationDTO) {
         ManagerRetrofit<AuthorizationDTO> managerRetrofit = new ManagerRetrofit<>();
-        managerRetrofit.sendRequest(context, authorizationDTO, new Object() {}.getClass().getEnclosingMethod().getName(), asyncAnswer);
+        return managerRetrofit.sendRequest_Boolean(authorizationDTO, new Object() {}.getClass().getEnclosingMethod().getName());
     }
 
 
-    public void authorizationManager(Context context, AuthorizationDTO authorizationDTO, ManagerRetrofit.AsyncAnswer asyncAnswer) {
+    public Boolean authorizationManager(AuthorizationDTO authorizationDTO) {
         ManagerRetrofit<AuthorizationDTO> managerRetrofit = new ManagerRetrofit<>();
-        managerRetrofit.sendRequest(context, authorizationDTO, new Object() {}.getClass().getEnclosingMethod().getName(), asyncAnswer);
+        return managerRetrofit.sendRequest_Boolean(authorizationDTO, new Object() {}.getClass().getEnclosingMethod().getName());
     }
 
 }

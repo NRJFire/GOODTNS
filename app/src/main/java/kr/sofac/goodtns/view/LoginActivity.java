@@ -77,45 +77,34 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         String password = md5Custom(md5Custom(editPassword.getText().toString()));
         String login = editLogin.getText().toString();
 
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-        String googleKey = sharedPref.getString(Constants.GOOGLE_CLOUD_PREFERENCE, "");
-        AuthorizationDTO authorizationDTO = new AuthorizationDTO(login, password, googleKey);
+        AuthorizationDTO authorizationDTO = new AuthorizationDTO(login, password, getGoogleKey());
 
         if ("".equals(password) && "".equals(login)) {
             Toast.makeText(LoginActivity.this, getString(R.string.filed_empty), Toast.LENGTH_SHORT).show();
         } else {
-
             if (spinnerLogin.getSelectedItem().toString().equals("Client")) {
-
-                new Server().authorizationUser(LoginActivity.this, authorizationDTO, new ManagerRetrofit.AsyncAnswer() {
-                    @Override
-                    public void processFinish(Boolean isSuccess, String answer, Context context) {
-                        if (isSuccess) {
-                            startMainActivity();
-                        } else {
-                            Toast.makeText(context, "Error data!", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
-
-
+                if (new Server().authorizationUser(authorizationDTO)) {
+                    startMainActivity();
+                } else {
+                    Toast.makeText(this, "Error data!", Toast.LENGTH_SHORT).show();
+                }
             } else {
-
-                new Server().authorizationManager(LoginActivity.this, authorizationDTO, new ManagerRetrofit.AsyncAnswer() {
-                    @Override
-                    public void processFinish(Boolean isSuccess, String answer, Context context) {
-                        if (isSuccess) {
-                            startMainActivity();
-                        } else {
-                            Toast.makeText(context, "Error data!", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
+                if (new Server().authorizationManager(authorizationDTO)) {
+                    startMainActivity();
+                } else {
+                    Toast.makeText(this, "Error data!", Toast.LENGTH_SHORT).show();
+                }
 
             }
         }
 
     }
+
+    public String getGoogleKey(){
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(LoginActivity.this);
+        return sharedPref.getString(Constants.GOOGLE_CLOUD_PREFERENCE, "");
+    }
+
 
     public static String md5Custom(String st) {
         MessageDigest messageDigest = null;
