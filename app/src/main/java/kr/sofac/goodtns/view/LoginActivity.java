@@ -83,24 +83,40 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             Toast.makeText(LoginActivity.this, getString(R.string.filed_empty), Toast.LENGTH_SHORT).show();
         } else {
             if (spinnerLogin.getSelectedItem().toString().equals("Client")) {
-                if (new Server().authorizationUser(authorizationDTO)) {
-                    startMainActivity();
-                } else {
-                    Toast.makeText(this, "Error data!", Toast.LENGTH_SHORT).show();
-                }
+                new Server().authorizationUser(authorizationDTO, new ManagerRetrofit.AsyncAnswerString() {
+                    @Override
+                    public void processFinish(Boolean isSuccess, String answerString) {
+                        if(isSuccess){
+                            startMainActivity();
+                        } else {
+                            toastShow("User authorization error!");
+                        }
+                    }
+                });
+
+
             } else {
-                if (new Server().authorizationManager(authorizationDTO)) {
-                    startMainActivity();
-                } else {
-                    Toast.makeText(this, "Error data!", Toast.LENGTH_SHORT).show();
-                }
+                new Server().authorizationManager(authorizationDTO, new ManagerRetrofit.AsyncAnswerString() {
+                    @Override
+                    public void processFinish(Boolean isSuccess, String answerString) {
+                        if(isSuccess){
+                            startMainActivity();
+                        } else {
+                            toastShow("Manager authorization error!");
+                        }
+                    }
+                });
 
             }
         }
 
     }
 
-    public String getGoogleKey(){
+    public void toastShow(String string){
+        Toast.makeText(this, string, Toast.LENGTH_SHORT).show();
+    }
+
+    public String getGoogleKey() {
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(LoginActivity.this);
         return sharedPref.getString(Constants.GOOGLE_CLOUD_PREFERENCE, "");
     }

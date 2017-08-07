@@ -6,6 +6,7 @@ import com.google.gson.reflect.TypeToken;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import kr.sofac.goodtns.Constants;
+import kr.sofac.goodtns.server.Server;
 import kr.sofac.goodtns.server.type.ServerRequest;
 import kr.sofac.goodtns.server.type.ServerResponse;
 import okhttp3.ResponseBody;
@@ -26,7 +27,11 @@ public class ManagerRetrofit<T> {
     private String serverResponseError = Constants.SERVER_RESPONSE_ERROR;
     private String serverResponse = serverResponseError;
     private ServerRequest serverRequest;
-    private AsyncAnswer answer = null;
+
+//    private AsyncAnswerServerResponse answerServerResponse = null;
+//    private AsyncAnswerServerResponseString answerServerResponseString = null;
+    private AsyncAnswerString answerString = null;
+
 
     /**
      * Иницалиазация сервиса передачи
@@ -42,44 +47,19 @@ public class ManagerRetrofit<T> {
     }
 
     /**
-     * Интерфейс обработки событий в потоке
+     * Интерфейсы обработки событий в потоке
      */
-    public interface AsyncAnswer {
-        void processFinish(Boolean isSuccess, String answer);
+    public interface AsyncAnswerString {
+        void processFinish(Boolean isSuccess, String answerString);
     }
 
-    /**
-     * Get String <= json (body response);
-     */
-    @SuppressWarnings("unchecked")
-    public String sendRequest_String(T object, String requestType) {
-        serverRequest = new ServerRequest(requestType, object);
-        try {
-            return logServerResponse(serviceRetrofit.getData(logServerRequest(serverRequest)).execute().body().string());
-        } catch (IOException e) {
-            e.printStackTrace();
-            return serverResponse;
-        }
-    }
-
-    /**
-     * Get True(SUCCESS) or False(ERROR) result for this Request;
-     */
-    public Boolean sendRequest_Boolean(T object, String requestType) {
-        Type typeServerResponse = new TypeToken<ServerResponse<String>>() {
-        }.getType();
-        ServerResponse<String> serverResponse = new Gson().fromJson(sendRequest_String(object, requestType), typeServerResponse);
-        return !serverResponseError.equals(serverResponse.getResponseStatus());
-
-    }
-
-    /**
-     * Get ServerResponse<String> for this Request;
-     */
-    public ServerResponse<String> sendRequest_ServerResponse(T object, String requestType) {
-        return getServerResponseFromStringJSON(sendRequest_String(object, requestType));
-    }
-
+//    public interface AsyncAnswerServerResponse {
+//        void processFinish(Boolean isSuccess, ServerResponse answerServerResponse);
+//    }
+//
+//    public interface AsyncAnswerServerResponseString {
+//        void processFinish(Boolean isSuccess, ServerResponse<String> answerServerResponse);
+//    }
 
     /**
      * Get Callback<ResponseBody> for this Request;
@@ -93,8 +73,8 @@ public class ManagerRetrofit<T> {
     /**
      * Get AsyncAnswer with True(SUCCESS) or False(ERROR) and String <= json (body response) for this Request;
      */
-    public void sendRequest(T object, String requestType, AsyncAnswer asyncAnswer) {
-        answer = asyncAnswer;
+    public void sendRequest(T object, String requestType, AsyncAnswerString asyncAnswer) {
+        answerString = asyncAnswer;
 
         sendRequest(object, requestType, new Callback<ResponseBody>() {
             @Override
@@ -102,24 +82,81 @@ public class ManagerRetrofit<T> {
                 try {
                     serverResponse = logServerResponse(response.body().string());
                     if (!serverResponseError.equals(getServerResponseFromStringJSON(serverResponse).getResponseStatus())) {
-                        answer.processFinish(true, serverResponse);
+                        answerString.processFinish(true, serverResponse);
                     } else {
-                        answer.processFinish(false, null);
+                        answerString.processFinish(false, null);
                     }
                 } catch (IOException e) {
-                    answer.processFinish(false, null);
+                    answerString.processFinish(false, null);
                     e.printStackTrace();
                 }
             }
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-                answer.processFinish(false, null);
+                answerString.processFinish(false, null);
             }
         });
     }
 
-    //TODO написать метод и интерфейс который случает поток, и отдает пример ServerResponse<ManagerDTO>
+//    /**
+//     * Get AsyncAnswer with True(SUCCESS) or False(ERROR) and (AsyncAnswerServerResponse asyncAnswer <= body response) for this Request;
+//     */
+//    public void sendRequest(T object, String requestType, AsyncAnswerServerResponse asyncAnswer) {
+//        answerServerResponse = asyncAnswer;
+//
+//        sendRequest(object, requestType, new Callback<ResponseBody>() {
+//            @Override
+//            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+//                try {
+//                    serverResponse = logServerResponse(response.body().string());
+//                    if (!serverResponseError.equals(getServerResponseFromStringJSON(serverResponse).getResponseStatus())) {
+//                        answerServerResponse.processFinish(true, getServerResponseFromStringJSON(serverResponse));
+//                    } else {
+//                        answerServerResponse.processFinish(false, null);
+//                    }
+//                } catch (IOException e) {
+//                    answerServerResponse.processFinish(false, null);
+//                    e.printStackTrace();
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<ResponseBody> call, Throwable t) {
+//                answerServerResponse.processFinish(false, null);
+//            }
+//        });
+//    }
+//
+//    /**
+//     * Get AsyncAnswer with True(SUCCESS) or False(ERROR) and (AsyncAnswerServerResponse asyncAnswer <= body response) for this Request;
+//     */
+//    public void sendRequest(T object, String requestType, AsyncAnswerServerResponseString asyncAnswer) {
+//        answerServerResponseString = asyncAnswer;
+//
+//        sendRequest(object, requestType, new Callback<ResponseBody>() {
+//            @Override
+//            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+//                try {
+//                    serverResponse = logServerResponse(response.body().string());
+//                    if (!serverResponseError.equals(getServerResponseFromStringJSON(serverResponse).getResponseStatus())) {
+//                        answerServerResponseString.processFinish(true, getServerResponseFromStringJSON(serverResponse));
+//                    } else {
+//                        answerServerResponseString.processFinish(false, null);
+//                    }
+//                } catch (IOException e) {
+//                    answerServerResponseString.processFinish(false, null);
+//                    e.printStackTrace();
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<ResponseBody> call, Throwable t) {
+//                answerServerResponseString.processFinish(false, null);
+//            }
+//        });
+//    }
+
 
     /**
      * //////// Вспомогательные методы ////////
@@ -129,7 +166,7 @@ public class ManagerRetrofit<T> {
      * Получение ServerResponse из String JSON
      */
     private ServerResponse<String> getServerResponseFromStringJSON(String stringJSON) {
-        Type typeServerResponse = new TypeToken<ServerResponse<String>>() {
+        Type typeServerResponse = new TypeToken<ServerResponse>() {
         }.getType();
         return new Gson().fromJson(stringJSON, typeServerResponse);
     }
@@ -138,7 +175,7 @@ public class ManagerRetrofit<T> {
      * Логирование данных передачи
      */
     private ServerRequest logServerRequest(ServerRequest serverRequest) {
-        Timber.e(">>>>> class:ManagerRetrofit; object:serverRequest : " + serverRequest);
+        Timber.e(">>>>> class:ManagerRetrofit; object:serverRequest : \n" + serverRequest);
         return serverRequest;
     }
 
@@ -146,7 +183,7 @@ public class ManagerRetrofit<T> {
      * Логирование данных приема
      */
     private String logServerResponse(String serverResponse) {
-        Timber.e("<<<<< class:ManagerRetrofit; object:serverResponse : " + serverResponse);
+        Timber.e("<<<<< class:ManagerRetrofit; object:serverResponse : \n" + serverResponse);
         return serverResponse;
     }
 

@@ -11,15 +11,15 @@ public class Server {
 
     // Type authorizationType = new TypeToken<ServerResponse<ManagerInfoDTO>>() {}.getType();
 
-    public Boolean authorizationUser(AuthorizationDTO authorizationDTO) {
+    public void authorizationUser(AuthorizationDTO authorizationDTO, ManagerRetrofit.AsyncAnswerString asyncAnswerString) {
         ManagerRetrofit<AuthorizationDTO> managerRetrofit = new ManagerRetrofit<>();
-        return managerRetrofit.sendRequest_Boolean(authorizationDTO, new Object() {}.getClass().getEnclosingMethod().getName());
+        managerRetrofit.sendRequest(authorizationDTO, new Object() {}.getClass().getEnclosingMethod().getName(), asyncAnswerString);
     }
 
 
-    public Boolean authorizationManager(AuthorizationDTO authorizationDTO) {
+    public void authorizationManager(AuthorizationDTO authorizationDTO, ManagerRetrofit.AsyncAnswerString asyncAnswerString) {
         ManagerRetrofit<AuthorizationDTO> managerRetrofit = new ManagerRetrofit<>();
-        return managerRetrofit.sendRequest_Boolean(authorizationDTO, new Object() {}.getClass().getEnclosingMethod().getName());
+        managerRetrofit.sendRequest(authorizationDTO, new Object() {}.getClass().getEnclosingMethod().getName(), asyncAnswerString);
     }
 
 }
