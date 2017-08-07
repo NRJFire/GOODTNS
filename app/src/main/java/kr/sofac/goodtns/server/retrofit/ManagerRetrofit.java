@@ -25,6 +25,7 @@ public class ManagerRetrofit<T> {
 
     private ServiceRetrofit serviceRetrofit;
     private String serverResponseError = Constants.SERVER_RESPONSE_ERROR;
+    private String baseUrl = Constants.BASE_URL;
     private String serverResponse = serverResponseError;
     private ServerRequest serverRequest;
 
@@ -40,7 +41,7 @@ public class ManagerRetrofit<T> {
                 .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
                 .create();
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(Constants.BASE_URL)
+                .baseUrl(baseUrl)
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
         serviceRetrofit = retrofit.create(ServiceRetrofit.class);

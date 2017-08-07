@@ -44,7 +44,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     private static long backPressed;
     EditText editPassword, editLogin;
     Button buttonLogin;
-    Spinner spinnerLogin;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,20 +53,9 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         initUI();
         buttonLogin.setOnClickListener(this);
         intent = new Intent(this, MainActivity.class);
-
-
-//        try {
-//        ManagerInfoDTO.deleteAll(ManagerInfoDTO.class);
-//        PermissionDTO.deleteAll(PermissionDTO.class);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-        Timber.e("Clear DB");
     }
 
     private void initUI() {
-
-        spinnerLogin = (Spinner) findViewById(R.id.spinner_login);
         editPassword = (EditText) findViewById(R.id.editPassword);
         editLogin = (EditText) findViewById(R.id.editLogin);
         buttonLogin = (Button) findViewById(R.id.buttonLogin);
@@ -82,14 +71,14 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         if ("".equals(password) && "".equals(login)) {
             Toast.makeText(LoginActivity.this, getString(R.string.filed_empty), Toast.LENGTH_SHORT).show();
         } else {
-            if (spinnerLogin.getSelectedItem().toString().equals("Client")) {
+            if (login.contains("@")) {
                 new Server().authorizationUser(authorizationDTO, new ManagerRetrofit.AsyncAnswerString() {
                     @Override
                     public void processFinish(Boolean isSuccess, String answerString) {
                         if(isSuccess){
                             startMainActivity();
                         } else {
-                            toastShow("User authorization error!");
+                            toastShow("Client authorization error!");
                         }
                     }
                 });

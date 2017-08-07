@@ -82,28 +82,6 @@
             <ImageView
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                app:srcCompat="@drawable/briefcase_check" />
-
-
-            <Spinner
-                android:id="@+id/spinner_login"
-                android:layout_width="230dp"
-                android:layout_height="wrap_content"
-                android:entries="@array/rolelist" >
-
-            </Spinner>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal|center_vertical"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
                 app:srcCompat="@drawable/account" />
 
 
