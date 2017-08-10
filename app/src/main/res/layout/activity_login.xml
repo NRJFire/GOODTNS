@@ -57,7 +57,7 @@
             android:layout_height="wrap_content"
             android:text="@string/login_description"
             android:textColor="@color/colorPrimary"
-            android:textSize="13sp" />
+            android:textSize="12sp" />
 
     </LinearLayout>
 

@@ -63,7 +63,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
     @Override
     public void onClick(View v) {
-        String password = md5Custom(md5Custom(editPassword.getText().toString()));
+        String password = editPassword.getText().toString();
         String login = editLogin.getText().toString();
 
         AuthorizationDTO authorizationDTO = new AuthorizationDTO(login, password, getGoogleKey());
@@ -111,30 +111,30 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     }
 
 
-    public static String md5Custom(String st) {
-        MessageDigest messageDigest = null;
-        byte[] digest = new byte[0];
-
-        try {
-            messageDigest = MessageDigest.getInstance("MD5");
-            messageDigest.reset();
-            messageDigest.update(st.getBytes());
-            digest = messageDigest.digest();
-        } catch (NoSuchAlgorithmException e) {
-            // тут можно обработать ошибку
-            // возникает она если в передаваемый алгоритм в getInstance(,,,) не существует
-            e.printStackTrace();
-        }
-
-        BigInteger bigInt = new BigInteger(1, digest);
-        String md5Hex = bigInt.toString(16);
-
-        while (md5Hex.length() < 32) {
-            md5Hex = "0" + md5Hex;
-        }
-
-        return md5Hex;
-    }
+//    public static String md5Custom(String st) {
+//        MessageDigest messageDigest = null;
+//        byte[] digest = new byte[0];
+//
+//        try {
+//            messageDigest = MessageDigest.getInstance("MD5");
+//            messageDigest.reset();
+//            messageDigest.update(st.getBytes());
+//            digest = messageDigest.digest();
+//        } catch (NoSuchAlgorithmException e) {
+//            // тут можно обработать ошибку
+//            // возникает она если в передаваемый алгоритм в getInstance(,,,) не существует
+//            e.printStackTrace();
+//        }
+//
+//        BigInteger bigInt = new BigInteger(1, digest);
+//        String md5Hex = bigInt.toString(16);
+//
+//        while (md5Hex.length() < 32) {
+//            md5Hex = "0" + md5Hex;
+//        }
+//
+//        return md5Hex;
+//    }
 
     public void startMainActivity() {
         preferences = getSharedPreferences(APP_PREFERENCES, MODE_PRIVATE);
